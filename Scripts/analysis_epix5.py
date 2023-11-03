@@ -31,11 +31,12 @@ with h5.File(smalldata_path + '{}_Run{:04d}.h5'.format(exp_name, run_num),'r') a
     
 # Load all the masks
 mask = mask.astype(bool)
-user_mask = np.load('/sdf/data/lcls/ds/xpp/xpplx9221/results/kyounes/mask/standard_mask.npy')
-user_mask = user_mask.astype(bool)
-bad_pixel_mask = np.load('/sdf/data/lcls/ds/xpp/xpplx9221/results/haoyuan/mask_epix{}_combined_hy_v1.npy'.format(epix))
 
-total_mask = (mask * user_mask * bad_pixel_mask).astype(bool)
+user_mask = np.load("/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/mask_epix5.npy")
+user_mask = user_mask.astype(bool)
+#bad_pixel_mask = np.load('/sdf/data/lcls/ds/xpp/xpplx9221/results/haoyuan/mask_epix{}_combined_hy_v1.npy'.format(epix))
+
+total_mask = (mask * user_mask ).astype(bool)
 
 # Process each pattern in this run
 shape = mask.shape
