@@ -27,7 +27,7 @@ def visit_func(name, node):
 
 def reconstruct_img(photons_i, photons_j, shape):
     nx, ny = shape
-    phot_img, _,_ = np.histogram2d(photons_j+0.5, photons_i+0.5, bins=[np.arange(nx+1),np.arange(ny+1)])                         
+    phot_img, _,_ = np.histogram2d(photons_j+0.5, photons_i+0.5, bins=[np.arange(nx+1),np.arange(ny+1)])     
     return phot_img
 
 def getProb_img(photons_i, photons_j, mask, Np=12):

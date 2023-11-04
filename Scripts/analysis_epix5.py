@@ -9,7 +9,7 @@ epix = 5
 
 # Define parameters -- update!
 exp_name = 'xppl1001021'
-output_path = '/sdf/data/lcls/ds/xpp/{}/results/output/'.format(exp_name)
+output_path = '/sdf/data/lcls/ds/xpp/{}/results/shared/output/'.format(exp_name)
 smalldata_path = '/sdf/data/lcls/ds/xpp/{}/hdf5/smalldata/'.format(exp_name)
 
 # Define functions
