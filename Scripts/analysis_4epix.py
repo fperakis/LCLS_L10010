@@ -91,16 +91,19 @@ p3 = np.zeros([N_epix, nframe])
 
 # Get the total photon count and probability per shot for all runs and patterns
 tic = time.time()
+pixel_num=[]
+for epix in range (N_epix):
+    pixel_num.append( float(np.sum(total_mask[epix])))
 for i in range(nframe):
     for epix in range (N_epix):
         imgs_reconstruct = reconstruct_img(photons_i[epix][i], photons_j[epix][i], shape)
         kbar[epix,i] += np.sum(imgs_reconstruct[total_mask[epix]])/ pixel_num
         p, p_bin_edge = np.histogram(imgs_reconstruct[total_mask[epix]].flatten(),bins=[-0.5, 0.5, 1.5, 2.5, 3.5])
     
-        p0[epix,i] = p[0] / pixel_num
-        p1[epix,i] = p[1] / pixel_num
-        p2[epix,i] = p[2] / pixel_num
-        p3[epix,i] = p[3] / pixel_num
+        p0[epix,i] = p[0] / pixel_num[epix]
+        p1[epix,i] = p[1] / pixel_num[epix]
+        p2[epix,i] = p[2] / pixel_num[epix]
+        p3[epix,i] = p[3] / pixel_num[epix]
 
     if i // 10000 == 0:
         toc = time.time()
