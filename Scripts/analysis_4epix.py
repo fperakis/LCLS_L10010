@@ -38,6 +38,7 @@ if __name__ == "__main__":
     mask[1][350:,635]=0
     mask[1][350:,636]=0
     mask[1][350:,637]=0
+    
     mask[3][507:509,477:479]=0
     mask[3][288:314,199:241]=0
 
@@ -77,7 +78,9 @@ if __name__ == "__main__":
         i_sample = f['lombpm']['channels'][:,1]
         cc = np.array(f['ai/ch03'])
         vcc = np.array(f['ai/ch02'])
-
+        
+        delayStageLocation = f['/epicsAll/sd_delay'][0]
+        delay = np.mean(0.939 * (delayStageLocation - 6.96))
 
 
     # Process each pattern in this run
@@ -116,12 +119,7 @@ if __name__ == "__main__":
             print(i/nframe,toc - tic)
 
     # Get the analytical contrast expression
-
     #beta_2ph = (2 * p2 - kbar * p1) / (kbar * (p1 - 2 * p2))
-
-
-    delayStageLocation = f['/epicsAll/sd_delay'][:]
-    delay = np.mean(0.939 * (delayStageLocation - 6.96))
 
 
     for epix in range(N_epix):
@@ -129,7 +127,7 @@ if __name__ == "__main__":
 
 
     #np.savez(output_path + 'contrast_run_{}_delay_{}_pulse_{}'.format(run_num, delay, pulse),## this would be ideal but not implemented
-    np.savez(output_path + 'contrast_run_{}_delay_{}'.format(run_num, delay),## this would be ideal but not implemented
+    np.savez(output_path + 'contrast_run_{}_delay_{}'.format(run_num, np.round(delay,2)),## this would be ideal but not implemented
              beta=beta,
              p1=p1,
              p2=p2,

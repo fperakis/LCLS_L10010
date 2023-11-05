@@ -28,15 +28,17 @@ with h5.File(smalldata_path + '{}_Run{:04d}.h5'.format(exp_name, run_num),'r') a
     i_sample = f['lombpm']['channels'][:,1]
     cc = np.array(f['ai/ch03'])
     vcc = np.array(f['ai/ch02'])
+    delayStageLocation = f['/epicsAll/sd_delay'][0]
+    delay = np.mean(0.939 * (delayStageLocation - 6.96))
     
 # Load all the masks
 #mask = mask.astype(bool)
 
-user_mask = np.load("/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/mask_epix5.npy")
-user_mask = user_mask.astype(bool)
+#user_mask = np.load("/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/mask_epix5.npy")
+#user_mask = user_mask.astype(bool)
 #bad_pixel_mask = np.load('/sdf/data/lcls/ds/xpp/xpplx9221/results/haoyuan/mask_epix{}_combined_hy_v1.npy'.format(epix))
 
-total_mask = ( user_mask ).astype(bool)
+#total_mask = ( user_mask ).astype(bool)
 
 # Process each pattern in this run
 shape = mask.shape
@@ -45,9 +47,9 @@ nframe = int(len(photons_i))
     
 
 
-roi=np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/roi.npy')    
+roi=np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/roi_02.npy')    
     
-roi_with_mask = roi * total_mask
+roi_with_mask = roi 
 pixel_num = float(np.sum(roi_with_mask))
 
 # Create holders for the result
@@ -68,7 +70,7 @@ for i in range(nframe):
         
 # Get the analytical contrast expression
 
-np.savez(output_path + 'contrast_run_{}_epix_{}'.format(run_num, epix),
+    np.savez(output_path + 'contrast_run_{}_delay_{}_epix_5'.format(run_num, np.round(delay,2)),## this would be ideal but not implemented
          beta=beta,
          kbar=kbar,
          cc=cc,
