@@ -1,0 +1,6 @@
+#editing remnants
+*.py~
+*.pyc
+*.ipynb_checkpoints
+*.so\
+__pycache__/

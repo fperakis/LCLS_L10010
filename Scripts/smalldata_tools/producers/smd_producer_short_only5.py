@@ -49,25 +49,6 @@ def getROIs(run):
 
 # 3) PHOTON COUNTING AND DROPLET
 
-# # Droplet algorithm (only)
-# def getDropletParams(run):
-#     """ Parameters for droplet algorithm
-#     See droplet.py for more info
-#     """
-#     if isinstance(run,str):
-#         run=int(run)
-#     ret_dict = {}
-#     if run<0:
-#         droplet_dict = {
-#             'theshold': 5,
-#             'thresholdLow':5,
-#             'thresADU':60,
-#             'useRms':True,
-#             'nData': 1e5 # int or None: sparsify arg
-#         }
-#         ret_dict['epix_1'] = droplet_dict
-#     return ret_dict
-
 def getDropletParams(run):
     """ Parameters for droplet algorithm
     See droplet2Func.py for more info
@@ -79,41 +60,41 @@ def getDropletParams(run):
         droplet_dict = {}
         droplet_dict['return_img'] = False
         droplet_dict['threshold'] = 15
-        droplet_dict['droplet_mask'] =  np.load('/reg/d/psdm/xpp/xppx47419/results/yanwen/code/mask/droplet_post_exp_ROI.npy')
-        droplet_dict['mask'] =  np.load('/reg/d/psdm/xpp/xppx47419/results/yanwen/code/mask/analysis_post_exp_ROI.npy')
+        droplet_dict['mask'] =  np.ones((704,768))
         droplet_dict['aduspphot'] = 162
         droplet_dict['offset'] = 81
-        ret_dict['epix_alc1'] = droplet_dict.copy()
+        
+        # only analyze for epix 5
+        ret_dict['epix_alc5'] = droplet_dict.copy()
+#         for det_i in range(1,5):
+#             ret_dict['epix_alc{}'.format(det_i)] = droplet_dict.copy()
+#         saxs_dict = {}
+#         saxs_dict['return_img'] = False
+#         saxs_dict['threshold'] = 15
+#         # temporal mask for epix 5
+#         saxs_dict['mask'] = np.ones((704,768))
+#         #saxs_dict['mask'] =          np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/droplet_mask_ROI_2023_11_02_10_36.npy') 
+#         #saxs_dict['droplet_mask'] =  np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/droplet_mask_2023_11_02_10_36.npy')
+#         saxs_dict['aduspphot'] = 162
+#         saxs_dict['offset'] = 81    
+#         ret_dict['epix_alc5'] = saxs_dict.copy()
+        
     return ret_dict
 
-# Droplet to photon algorithm (greedy guess)
-def getDroplet2Photons(run):
-    """ Set parameter for droplet2photon analysis. The analysis uses two functions, each with their
-    own dictionary of argument:
-        1. droplet: see droplet.py for args documentation
-        2. photonize droplets: see droplet2Photons.py for args documentation
-    """
+
+def getAzIntPyFAIParams(run):
     if isinstance(run,str):
         run=int(run)
     ret_dict = {}
     if run>0:
-        d2p_dict = {}
-        # droplet args
-        d2p_dict['droplet'] = {
-            'threshold': 0.09,
-            'thresholdLow':0.09,
-            'thresADU': 0,
-            'useRms': False
-        }
-        # droplet2Photons args
-        d2p_dict['d2p'] = {
-            'aduspphot': 10.2,
-#                 'mask': np.load('path_to_mask'),
-            'cputime': True
-        }
-        d2p_dict['nData'] = 0
-        for det_i in range(1,5):
-            ret_dict['epix_alc{}'.format(det_i)] = d2p_dict.copy()
+        az_dict = {}
+        pix_size = 75e-6 
+        az_dict['poni_file'] = "/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/poni/jungfrau_231103.poni"
+        az_dict['mask'] = np.load("/sdf/data/lcls/ds/xpp/xppl1001021/results/shared/mask/mask_jungfrau_231103_02.npy").astype(bool)
+        az_dict['npts'] = 512 
+        az_dict['int_units'] = 'q_A^-1'
+        az_dict['return2d'] = False
+        ret_dict['jungfrau1M_alcove'] = az_dict 
     return ret_dict
 
 
@@ -150,7 +131,7 @@ aioParams=[]
 
 # DEFINE DETECTOR AND ADD ANALYSIS FUNCTIONS
 def define_dets(run):
-    detnames = ['jungfrau1M', 'epix_alc1', 'epix_alc2', 'epix_alc3', 'epix_alc4'] # add detector here
+    detnames = ['jungfrau1M_alcove', 'epix_alc1', 'epix_alc2', 'epix_alc3', 'epix_alc4', 'epix_alc5'] # add detector here
     dets = []
     
     # Load DetObjectFunc parameters (if defined)
@@ -217,25 +198,28 @@ def define_dets(run):
                                         writeArea=ROIs[detname]['writeArea'],
                                         thresADU=ROIs[detname]['thresADU']))
             
-            # Azimuthal binning
-            if detname in az:
-                det.addFunc(azimuthalBinning(**az[detname]))
-            if detname in az_pyfai:
-                det.addFunc(azav_pyfai(**az_pyfai[detname]))
+            # skip azimuthal integration for short version
+#             # Azimuthal binning
+#             if detname in az:
+#                 det.addFunc(azimuthalBinning(**az[detname]))
+#             if detname in az_pyfai:
+#                 det.addFunc(azav_pyfai(**az_pyfai[detname]))
             
             # Photon count
             if detname in phot:
                 det.addFunc(photonFunc(**phot[detname]))
             
             # Droplet algo
+#             if detname in drop:
+#                 if nData in drop:
+#                     nData = drop.pop('nData')
+#                 else:
+#                     nData = None
+#                 func = dropletFunc(**drop[detname])
+#                 func.addFunc(roi.sparsifyFunc(nData=nData))
+#                 det.addFunc(func)
             if detname in drop:
-                if nData in drop:
-                    nData = drop.pop('nData')
-                else:
-                    nData = None
-                func = dropletFunc(**drop[detname])
-                func.addFunc(roi.sparsifyFunc(nData=nData))
-                det.addFunc(func)
+                det.addFunc(droplet2Func(**drop[detname]))
             
             # Droplet to photons
             if detname in drop2phot:
@@ -315,12 +299,12 @@ from smalldata_tools.ana_funcs.sparsifyFunc import sparsifyFunc
 from smalldata_tools.ana_funcs.waveformFunc import getCMPeakFunc, templateFitFunc
 from smalldata_tools.ana_funcs.photons import photonFunc
 from smalldata_tools.ana_funcs.droplet import dropletFunc
+from smalldata_tools.ana_funcs.droplet2Func import droplet2Func
 from smalldata_tools.ana_funcs.droplet2Photons import droplet2Photons
 from smalldata_tools.ana_funcs.azimuthalBinning import azimuthalBinning
 from smalldata_tools.ana_funcs.azav_pyfai import azav_pyfai
 from smalldata_tools.ana_funcs.smd_svd import svdFit
 from smalldata_tools.ana_funcs.correlations.smd_autocorr import Autocorrelation
-
 
 #logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
@@ -564,6 +548,8 @@ except Exception as e:
     logger.debug('Could not instantiate MPIDataSource with {0}: {1}'.format(ds_name, e))
     sys.exit()
 
+ds.break_after(1000) # stop iteration after 1000 events (break statements do not work reliably with MPIDataSource).    
+    
 # Generate smalldata object
 small_data = ds.small_data(h5_f_name, gather_interval=args.gather_interval)
 

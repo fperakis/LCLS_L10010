@@ -1,3 +1,9 @@
 # notebook chackpoints
+*/.ipynb_checkpoints/*
 .ipynb_checkpoints/
 Scripts/.ipynb_checkpoints/
+
+# pychache
+*/__pycache__
+*__pycache__
+__pycache__/

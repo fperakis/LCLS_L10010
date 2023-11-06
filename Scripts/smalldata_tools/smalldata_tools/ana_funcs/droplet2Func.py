@@ -35,9 +35,9 @@ class droplet2Func(DetObjectFunc):
         self.aduspphot = kwargs.get('aduspphot', 0)
         self.offset = kwargs.get('offset', 0)
         self.photpts = np.arange(1000000)*self.aduspphot-self.aduspphot+self.offset
-        self.nroi = int(self.mask.max())
         if self.mask is None:
             print('A mask MUST be passed to droplet2Func.')
+        self.nroi = int(self.mask.max())
 
     def setFromDet(self, det):
         super(droplet2Func, self).setFromDet(det)

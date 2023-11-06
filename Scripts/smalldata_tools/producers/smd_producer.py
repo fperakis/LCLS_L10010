@@ -65,14 +65,17 @@ def getDropletParams(run):
         droplet_dict['offset'] = 81
         for det_i in range(1,5):
             ret_dict['epix_alc{}'.format(det_i)] = droplet_dict.copy()
-        saxs_dict = {}
-        saxs_dict['return_img'] = False
-        saxs_dict['threshold'] = 15
-        saxs_dict['mask'] =   np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/droplet_mask_ROI_2023_11_02_10_36.npy')      
-        saxs_dict['droplet_mask'] =  np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/droplet_mask_2023_11_02_10_36.npy')
-        saxs_dict['aduspphot'] = 162
-        saxs_dict['offset'] = 81    
-        ret_dict['epix_alc5'] = saxs_dict.copy()
+        # no need to do droplet analysis for epix 5
+#         saxs_dict = {}
+#         saxs_dict['return_img'] = False
+#         saxs_dict['threshold'] = 15
+#         # temporal mask for epix 5
+#         saxs_dict['mask'] = np.ones((704,768))
+#         #saxs_dict['mask'] =          np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/droplet_mask_ROI_2023_11_02_10_36.npy') 
+#         #saxs_dict['droplet_mask'] =  np.load('/sdf/data/lcls/ds/xpp/xppl1001021/results/droplet_mask_2023_11_02_10_36.npy')
+#         saxs_dict['aduspphot'] = 162
+#         saxs_dict['offset'] = 81    
+#         ret_dict['epix_alc5'] = saxs_dict.copy()
         
     return ret_dict
 
