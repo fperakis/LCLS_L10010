@@ -1,0 +1,28 @@
+*** In Event: run 24 ,event# in single job = 0 , total about  0  memory used:  741.277696  at  11:44:51
+*** In Event: run 24 ,event# in single job = 10 , total about  160  memory used:  1779.007488  at  11:44:56
+*** In Event: run 24 ,event# in single job = 20 , total about  320  memory used:  1905.590272  at  11:44:58
+*** In Event: run 24 ,event# in single job = 30 , total about  480  memory used:  2079.86688  at  11:44:59
+*** In Event: run 24 ,event# in single job = 40 , total about  640  memory used:  2256.257024  at  11:45:01
+*** In Event: run 24 ,event# in single job = 50 , total about  800  memory used:  2431.369216  at  11:45:03
+*** In Event: run 24 ,event# in single job = 60 , total about  960  memory used:  2607.398912  at  11:45:05
+*** In Event: run 24 ,event# in single job = 70 , total about  1120  memory used:  2782.134272  at  11:45:06
+*** In Event: run 24 ,event# in single job = 80 , total about  1280  memory used:  2957.39392  at  11:45:08
+*** In Event: run 24 ,event# in single job = 90 , total about  1440  memory used:  3133.11232  at  11:45:10
+*** In Event: run 24 ,event# in single job = 100 , total about  1600  memory used:  87488.954368  at  11:45:46
+rank 1 on sdfmilan072 is finished
+rank 2 on sdfmilan072 is finished
+rank 3 on sdfmilan072 is finished
+rank 5 on sdfmilan072 is finished
+rank 4 on sdfmilan072 is finished
+rank 6 on sdfmilan072 is finished
+rank 7 on sdfmilan072 is finished
+rank 9 on sdfmilan072 is finished
+rank 10 on sdfmilan072 is finished
+rank 11 on sdfmilan072 is finished
+rank 13 on sdfmilan072 is finished
+rank 8 on sdfmilan072 is finished
+rank 12 on sdfmilan072 is finished
+rank 14 on sdfmilan072 is finished
+rank 15 on sdfmilan072 is finished
+rank 0 on sdfmilan072 is finished
+Closing remaining open files:jungfrau/run24.h5...done
