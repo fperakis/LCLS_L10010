@@ -488,7 +488,7 @@ def _dict_to_h5(d, f):
         elif isinstance(v, np.ndarray) or isinstance(v, list):
             f.create_dataset(k, data=v)
         else:
-            print('Data type not understood for key {}.\n'.format(key))
+            print('Data type not understood for key {}.\n'.format(k))
             print(v)
     return
 

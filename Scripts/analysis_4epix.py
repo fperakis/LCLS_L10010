@@ -2,6 +2,8 @@ import numpy as np
 import h5py as h5
 import sys
 import time
+import argparse
+from pathlib import Path
 
 
 def hardcodedMask(epix_ids):
@@ -87,11 +89,11 @@ if __name__ == "__main__":
     
     if epix_ids.any() != 5:
         mask = hardcodedMask(epix_ids)
-    else if epix_ids[0] == 5:
+    elif epix_ids[0] == 5:
         mask = np.load(Path(shared, 'mask', 'xppl1001021_Run0024_epix5_mask.npy'))
 
     # Load the result from droplet analysis
-    with h5.File(Path(smalldata, f'{exp}_Run{run:04d}.h5'),'r') as f:
+    with h5.File(Path(smalldata, f'{exp}_Run{args.run:04d}.h5'),'r') as f:
         horizontal_slit = h5['epics/slit_s4_hw'][:]
         vertical_slit = h5['epics/slit_s4_vw'][:]
         crl_z = h5['epicsAll/crl_z'][:]
@@ -167,7 +169,7 @@ if __name__ == "__main__":
 
 
     #np.savez(output_path + 'contrast_run_{}_delay_{}_pulse_{}'.format(run_num, delay, pulse),## this would be ideal but not implemented
-    np.savez(output_path + 'contrast_run_{}_delay_{}'.format(run_num, np.round(delay,2)),## this would be ideal but not implemented
+    np.savez(args.output + 'contrast_run_{}_delay_{}'.format(run_num, np.round(delay,2)),## this would be ideal but not implemented
              beta=beta,
              p1=p1,
              p2=p2,
